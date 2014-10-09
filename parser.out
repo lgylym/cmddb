@@ -1,0 +1,280 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    INSERT
+    INTO
+    ORDER
+    NOT
+    VALUES
+    BY
+    OR
+
+Grammar
+
+Rule 0     S' -> assign_statement
+Rule 1     assign_statement -> NAME EQUAL select_statement
+Rule 2     assign_statement -> select_statement
+Rule 3     select_statement -> SELECT attrlist FROM tablist opt_where_clause SEMI
+Rule 4     opt_where_clause -> WHERE condition_list
+Rule 5     opt_where_clause -> <empty>
+Rule 6     condition_list -> condition
+Rule 7     condition_list -> condition_list COMMA condition
+Rule 8     condition -> NAME EQUAL NAME
+Rule 9     attrlist -> NAME
+Rule 10    attrlist -> attrlist COMMA NAME
+Rule 11    tablist -> NAME
+Rule 12    tablist -> tablist COMMA NAME
+
+Terminals, with rules where they appear
+
+AND                  : 
+BY                   : 
+COMMA                : 7 10 12
+EQUAL                : 1 8
+FROM                 : 3
+INSERT               : 
+INTO                 : 
+NAME                 : 1 8 8 9 10 11 12
+NOT                  : 
+OR                   : 
+ORDER                : 
+SELECT               : 3
+SEMI                 : 3
+VALUES               : 
+WHERE                : 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+assign_statement     : 0
+attrlist             : 3 10
+condition            : 6 7
+condition_list       : 4 7
+opt_where_clause     : 3
+select_statement     : 1 2
+tablist              : 3 12
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . assign_statement
+    (1) assign_statement -> . NAME EQUAL select_statement
+    (2) assign_statement -> . select_statement
+    (3) select_statement -> . SELECT attrlist FROM tablist opt_where_clause SEMI
+
+    NAME            shift and go to state 1
+    SELECT          shift and go to state 4
+
+    assign_statement               shift and go to state 2
+    select_statement               shift and go to state 3
+
+state 1
+
+    (1) assign_statement -> NAME . EQUAL select_statement
+
+    EQUAL           shift and go to state 5
+
+
+state 2
+
+    (0) S' -> assign_statement .
+
+
+
+state 3
+
+    (2) assign_statement -> select_statement .
+
+    $end            reduce using rule 2 (assign_statement -> select_statement .)
+
+
+state 4
+
+    (3) select_statement -> SELECT . attrlist FROM tablist opt_where_clause SEMI
+    (9) attrlist -> . NAME
+    (10) attrlist -> . attrlist COMMA NAME
+
+    NAME            shift and go to state 7
+
+    attrlist                       shift and go to state 6
+
+state 5
+
+    (1) assign_statement -> NAME EQUAL . select_statement
+    (3) select_statement -> . SELECT attrlist FROM tablist opt_where_clause SEMI
+
+    SELECT          shift and go to state 4
+
+    select_statement               shift and go to state 8
+
+state 6
+
+    (3) select_statement -> SELECT attrlist . FROM tablist opt_where_clause SEMI
+    (10) attrlist -> attrlist . COMMA NAME
+
+    FROM            shift and go to state 9
+    COMMA           shift and go to state 10
+
+
+state 7
+
+    (9) attrlist -> NAME .
+
+    FROM            reduce using rule 9 (attrlist -> NAME .)
+    COMMA           reduce using rule 9 (attrlist -> NAME .)
+
+
+state 8
+
+    (1) assign_statement -> NAME EQUAL select_statement .
+
+    $end            reduce using rule 1 (assign_statement -> NAME EQUAL select_statement .)
+
+
+state 9
+
+    (3) select_statement -> SELECT attrlist FROM . tablist opt_where_clause SEMI
+    (11) tablist -> . NAME
+    (12) tablist -> . tablist COMMA NAME
+
+    NAME            shift and go to state 12
+
+    tablist                        shift and go to state 11
+
+state 10
+
+    (10) attrlist -> attrlist COMMA . NAME
+
+    NAME            shift and go to state 13
+
+
+state 11
+
+    (3) select_statement -> SELECT attrlist FROM tablist . opt_where_clause SEMI
+    (12) tablist -> tablist . COMMA NAME
+    (4) opt_where_clause -> . WHERE condition_list
+    (5) opt_where_clause -> .
+
+    COMMA           shift and go to state 15
+    WHERE           shift and go to state 16
+    SEMI            reduce using rule 5 (opt_where_clause -> .)
+
+    opt_where_clause               shift and go to state 14
+
+state 12
+
+    (11) tablist -> NAME .
+
+    COMMA           reduce using rule 11 (tablist -> NAME .)
+    WHERE           reduce using rule 11 (tablist -> NAME .)
+    SEMI            reduce using rule 11 (tablist -> NAME .)
+
+
+state 13
+
+    (10) attrlist -> attrlist COMMA NAME .
+
+    FROM            reduce using rule 10 (attrlist -> attrlist COMMA NAME .)
+    COMMA           reduce using rule 10 (attrlist -> attrlist COMMA NAME .)
+
+
+state 14
+
+    (3) select_statement -> SELECT attrlist FROM tablist opt_where_clause . SEMI
+
+    SEMI            shift and go to state 17
+
+
+state 15
+
+    (12) tablist -> tablist COMMA . NAME
+
+    NAME            shift and go to state 18
+
+
+state 16
+
+    (4) opt_where_clause -> WHERE . condition_list
+    (6) condition_list -> . condition
+    (7) condition_list -> . condition_list COMMA condition
+    (8) condition -> . NAME EQUAL NAME
+
+    NAME            shift and go to state 20
+
+    condition_list                 shift and go to state 19
+    condition                      shift and go to state 21
+
+state 17
+
+    (3) select_statement -> SELECT attrlist FROM tablist opt_where_clause SEMI .
+
+    $end            reduce using rule 3 (select_statement -> SELECT attrlist FROM tablist opt_where_clause SEMI .)
+
+
+state 18
+
+    (12) tablist -> tablist COMMA NAME .
+
+    COMMA           reduce using rule 12 (tablist -> tablist COMMA NAME .)
+    WHERE           reduce using rule 12 (tablist -> tablist COMMA NAME .)
+    SEMI            reduce using rule 12 (tablist -> tablist COMMA NAME .)
+
+
+state 19
+
+    (4) opt_where_clause -> WHERE condition_list .
+    (7) condition_list -> condition_list . COMMA condition
+
+    SEMI            reduce using rule 4 (opt_where_clause -> WHERE condition_list .)
+    COMMA           shift and go to state 22
+
+
+state 20
+
+    (8) condition -> NAME . EQUAL NAME
+
+    EQUAL           shift and go to state 23
+
+
+state 21
+
+    (6) condition_list -> condition .
+
+    COMMA           reduce using rule 6 (condition_list -> condition .)
+    SEMI            reduce using rule 6 (condition_list -> condition .)
+
+
+state 22
+
+    (7) condition_list -> condition_list COMMA . condition
+    (8) condition -> . NAME EQUAL NAME
+
+    NAME            shift and go to state 20
+
+    condition                      shift and go to state 24
+
+state 23
+
+    (8) condition -> NAME EQUAL . NAME
+
+    NAME            shift and go to state 25
+
+
+state 24
+
+    (7) condition_list -> condition_list COMMA condition .
+
+    COMMA           reduce using rule 7 (condition_list -> condition_list COMMA condition .)
+    SEMI            reduce using rule 7 (condition_list -> condition_list COMMA condition .)
+
+
+state 25
+
+    (8) condition -> NAME EQUAL NAME .
+
+    COMMA           reduce using rule 8 (condition -> NAME EQUAL NAME .)
+    SEMI            reduce using rule 8 (condition -> NAME EQUAL NAME .)
+
